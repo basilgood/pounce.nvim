@@ -8,6 +8,7 @@ local config = {
   accept_keys = "JFKDLSAHGNUVRBYTMICEOXWPQZ",
   accept_best_key = "<enter>",
   multi_window = true,
+  prompt = "✒ ",
   debug = false,
   increase_cmd_height_if_zero = true,
 }
@@ -157,7 +158,7 @@ function M.setup(opts)
     M.pounce(opts)
   end, {
     nargs = "*",
-    preview = function(args, ns, splitbuf)
+    preview = function(args, ns)
       return M.pounce({ input = args.args, just_preview = true }, ns)
     end,
   })
@@ -334,7 +335,7 @@ function M.pounce(opts, ns)
     log.debug("Matching took " .. elapsed * 1000 .. "ms")
 
     if not opts.just_preview then
-      vim.api.nvim_echo({ { "pounce> ", "Keyword" }, { input } }, false, {})
+      vim.api.nvim_echo({ { config.prompt, "Keyword" }, { input } }, false, {})
       vim.cmd "redraw"
 
       local ok, nr = pcall(vim.fn.getchar)
